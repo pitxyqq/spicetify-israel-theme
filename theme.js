@@ -15,7 +15,6 @@
     punch: 0.22,        // how far the star jumps on a full hit (0.22 = 22%)
     offsetMs: 0,        // raise this if hits look early (Bluetooth), lower if late
     pausedSpeed: 0.2,   // spin speed while music is paused (1 = full)
-    notice: true,       // after startup, say what was found in the first song
   };
 
   const WAVEFORM = 237; // Spotify's metadata extension id for the 3-band waveform
@@ -132,12 +131,12 @@
     if (!maps.has(uri)) {
       if (maps.size > 30) maps.delete(maps.keys().next().value);
       const job = readWave(uri).then((wave) => {
-        if (!wave) { maps.delete(uri); return { hits: [], note: "Spotify has no bass data for this song" }; }
+        if (!wave) { maps.delete(uri); return { hits: [] }; }
         const ms = wave.sampleWindowSizeMs;
         // Coarser than this, a hit can't be placed in time.
-        if (ms > 130) return { hits: [], note: `Bass data too coarse for this song (${ms} ms)` };
+        if (ms > 130) return { hits: [] };
         const hits = bassMap(wave);
-        return { hits, note: hits.length ? `Whole song mapped: ${hits.length} bass hits (${ms} ms detail)` : "No clear bass in this song" };
+        return { hits };
       });
       maps.set(uri, job);
     }
@@ -145,21 +144,17 @@
   }
 
   const isTrack = (uri) => !!uri?.startsWith("spotify:track:");
-  let song = { uri: null, hits: [], note: "" }, index = -1, noticed = false;
+  let song = { uri: null, hits: [] }, index = -1;
 
   async function loadSong() {
     const uri = player()?.data?.item?.uri;
     if (!SETTINGS.bass || !uri || uri === song.uri) return;
-    song = { uri, hits: [], note: "Reading" };
+    song = { uri, hits: [] };
     index = -1;
     if (!isTrack(uri)) return;
     const found = await mapSong(uri);
     if (song.uri !== uri) return; // skipped meanwhile
     song = { uri, ...found };
-    if (SETTINGS.notice && !noticed) {
-      noticed = true;
-      try { Spicetify.showNotification(found.note); } catch { /* not important */ }
-    }
     // Map the next song early, so it is ready from its first bass hit.
     const next = window.Spicetify.Queue?.nextTracks?.[0]?.contextTrack?.uri;
     if (isTrack(next)) mapSong(next);
