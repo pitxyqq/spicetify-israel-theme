@@ -1,0 +1,244 @@
+/* Israel: gold edition
+ * The window is laid out like the flag: a gold stripe under the top bar, a gold
+ * stripe above the player, and the Star of David between them in the main view.
+ * The star is painted BEHIND the content, so it never covers text or artwork.
+ *
+ * Easy tweaks: */
+:root {
+  --il-star-opacity: 0.5;    /* 0 = hidden, 1 = solid */
+  --il-star-size: 78vmin;
+  --il-stripe: 6px;
+  --il-spin-time: 30s;       /* one full turn; lower = faster */
+
+  --il-gold: #e8b923;
+  --il-line: rgba(232, 185, 35, 0.4);
+  --il-ink: #171003;
+  --il-metal: #e8b923;
+}
+
+/* ---------- Colours Spicetify leaves grey or green ---------- */
+.encore-dark-theme,
+.encore-dark-theme .encore-base-set {
+  --background-elevated-press: #241a07;
+  --essential-subdued: #a98d4a;
+  --decorative-subdued: #4d3912;
+}
+.encore-dark-theme .encore-bright-accent-set,
+.encore-dark-theme .encore-positive-set {
+  --background-highlight: #ffe9a3;
+  --background-press: #d19f14;
+  --background-elevated-highlight: #ffe9a3;
+  --background-elevated-press: #d19f14;
+}
+.encore-dark-theme .encore-inverted-light-set,
+.encore-dark-theme .encore-inverted-set {
+  --background-base: #ffd54a;
+  --background-highlight: #ffe9a3;
+  --background-press: #d19f14;
+  --text-base: #171003;
+  --text-subdued: #3a2a0d;
+}
+
+/* ---------- Panels ---------- */
+.Root__main-view {
+  isolation: isolate;
+  border-radius: 10px;
+  background: radial-gradient(ellipse 100% 90% at 50% 50%, #241905 0%, #0d0902 100%) !important;
+}
+.Root__nav-bar {
+  border-radius: 10px;
+  background: #0d0902 !important;
+}
+/* An inset overlay draws the gold frame without changing the layout. */
+.Root__main-view::after,
+.Root__nav-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  border: 1px solid var(--il-line);
+  border-radius: 10px;
+  pointer-events: none;
+}
+
+/* ---------- Flag stripes ---------- */
+.Root__globalNav {
+  background: #0d0902 !important;
+}
+.Root__now-playing-bar {
+  position: relative;
+  background: #0d0902 !important;
+}
+.Root__globalNav::after,
+.Root__now-playing-bar::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: var(--il-stripe);
+  background: var(--il-gold);
+  pointer-events: none;
+}
+.Root__globalNav::after { bottom: 0; transform-origin: bottom; }
+.Root__now-playing-bar::before { top: 0; transform-origin: top; }
+
+/* ---------- Star of David ---------- */
+.Root__main-view::before {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  margin: auto;
+  z-index: -1;
+  width: var(--il-star-size);
+  height: var(--il-star-size);
+  opacity: var(--il-star-opacity);
+  pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-100 -100 200 200'%3E%3Cg fill='none' stroke='%23e8b923' stroke-width='12'%3E%3Cpath d='M0-80 69.3 40H-69.3Z'/%3E%3Cpath d='M0 80 69.3-40H-69.3Z'/%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat;
+  will-change: transform, scale, opacity;
+  animation: il-spin var(--il-spin-time) linear infinite;
+}
+@keyframes il-spin { to { transform: rotate(360deg); } }
+
+/* Let the star show through the layers Spotify paints above it. */
+.main-view-container,
+.main-view-container__scroll-node,
+.main-view-container__mh-footer-container,
+.main-gridContainer-gridContainer,
+.playlist-playlist-playlistContent,
+.playlist-playlist-concertsFooter,
+/* Unnamed content wrappers with the same solid background on other pages */
+.Root__main-view .bHSUaaRqd3emBoViqd_b,
+.Root__main-view .fmJtSKRbaIwuGI4eOWBt,
+.Root__main-view .CU6UW9KzAHCdO5xqbBbf {
+  background: transparent !important;
+}
+.main-home-homeHeader {
+  background: linear-gradient(180deg, rgba(232, 185, 35, 0.18), transparent) !important;
+}
+/* Spotify sets the artwork colour inline here (purple on Liked Songs), so clear
+   the colour as well as the gradient. */
+[class*="actionBarBackground-background"] {
+  background: none !important;
+}
+
+/* ---------- Intro: the star draws itself once at startup ---------- */
+#il-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(58, 42, 13, 0.97), rgba(13, 9, 2, 0.97));
+  animation: il-fade 0.7s 1.7s ease-in forwards;
+}
+#il-intro svg {
+  width: 46vmin;
+  overflow: visible;
+  filter: drop-shadow(0 0 18px rgba(255, 213, 74, 0.8));
+  animation: il-zoom 0.7s 1.7s ease-in forwards;
+}
+#il-intro path {
+  stroke: #ffd54a;
+  stroke-width: 9;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: il-draw 1.1s 0.1s cubic-bezier(0.6, 0, 0.2, 1) forwards;
+}
+#il-intro path + path { animation-delay: 0.45s; }
+@keyframes il-draw { to { stroke-dashoffset: 0; } }
+@keyframes il-fade { to { opacity: 0; } }
+@keyframes il-zoom { to { transform: scale(2.6); } }
+
+/* ---------- Page headers ---------- */
+.main-entityHeader-backgroundColor {
+  background-color: transparent !important;
+  background-image: linear-gradient(180deg, rgba(232, 185, 35, 0.2), transparent) !important;
+}
+.main-entityHeader-title,
+.main-entityHeader-title * { color: #ffd54a !important; }
+.main-entityHeader-title { text-shadow: 0 3px 0 rgba(0, 0, 0, 0.85); }
+.main-entityHeader-image {
+  box-shadow: 0 0 0 3px var(--il-gold), 0 8px 24px rgba(0, 0, 0, 0.8) !important;
+}
+.main-topBar-background {
+  background-color: #171003 !important;
+}
+
+/* ---------- Track list ---------- */
+.main-trackList-trackListHeaderRow {
+  border-bottom-color: var(--il-line) !important;
+}
+.main-trackList-trackListRow:hover {
+  background: rgba(232, 185, 35, 0.2) !important;
+  box-shadow: inset 4px 0 0 #ffd54a;
+}
+.main-trackList-trackListRow[aria-selected="true"] {
+  background-color: rgba(232, 185, 35, 0.32) !important;
+}
+.main-trackList-trackListRow { text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85); }
+.main-trackList-rowMainContentTitle { font-weight: 600; }
+/* Current song (unnamed Spotify class, may change in an update) */
+.main-trackList-trackListRow.Q_VN_DjnfmJnnbShT4rU {
+  background: rgba(232, 185, 35, 0.32) !important;
+  box-shadow: inset 4px 0 0 #ffd54a;
+}
+
+/* ---------- Cards and home shortcuts ---------- */
+.main-card-card,
+.view-homeShortcutsGrid-shortcut {
+  background-color: rgba(23, 16, 3, 0.92) !important;
+  box-shadow: inset 0 0 0 1px var(--il-line);
+  transition: background-color 0.12s, box-shadow 0.12s;
+}
+.main-card-card:hover,
+.view-homeShortcutsGrid-shortcut:hover {
+  background-color: #3a2a0d !important;
+  box-shadow: inset 0 0 0 2px var(--il-gold);
+}
+
+/* ---------- Buttons ---------- */
+button[data-testid="play-button"] > span:first-child,
+button[data-testid="control-button-playpause"] {
+  border-radius: 50%;
+  background: var(--il-metal) !important;
+  color: var(--il-ink) !important;
+}
+button[data-testid="control-button-playpause"] span {
+  background: transparent !important;
+  color: var(--il-ink) !important;
+}
+
+/* ---------- Progress and volume ---------- */
+.Root__now-playing-bar .progress-bar {
+  --fg-color: #ffd54a !important;
+  --is-active-fg-color: #ffe9a3 !important;
+  --bg-color: rgba(255, 233, 163, 0.28) !important;
+}
+.Root__now-playing-bar .x-progressBar-fillColor {
+  background-image: none !important;
+}
+.main-nowPlayingWidget-coverArtContainer {
+  box-shadow: 0 0 0 2px var(--il-gold);
+}
+.main-nowPlayingView-coverArtContainer {
+  box-shadow: 0 0 0 2px var(--il-gold);
+}
+.Root__now-playing-bar .progress-bar__slider { background-color: #fff0ba; }
+
+/* ---------- Search, menus, focus, scrollbar ---------- */
+.main-globalNav-searchInputContainer .main-topBar-searchBar {
+  box-shadow: inset 0 0 0 1px var(--il-line) !important;
+}
+.main-globalNav-searchInputContainer .main-topBar-searchBar:focus {
+  box-shadow: inset 0 0 0 2px var(--il-gold) !important;
+}
+.main-contextMenu-menu {
+  background-color: #2e210a !important;
+  border: 1px solid var(--il-line);
+}
+.main-contextMenu-menuItemButton:hover { background-color: rgba(232, 185, 35, 0.22) !important; }
+:focus-visible { outline-color: #ffd54a !important; }
+::selection { background: #e8b923; color: #171003; }
+.os-scrollbar-handle { background: var(--il-gold) !important; border-radius: 6px !important; }
+::-webkit-scrollbar-thumb { background: var(--il-gold) !important; border-radius: 6px; }

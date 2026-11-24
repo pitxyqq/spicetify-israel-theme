@@ -1,0 +1,9 @@
+{
+  "name": "Israel",
+  "description": "A dark gold Spicetify theme with Israeli flag accents, a Star of David and bass-reactive visual details.",
+  "preview": "preview.svg",
+  "usercss": "user.css",
+  "schemes": "color.ini",
+  "readme": "README.md",
+  "tags": ["dark", "gold", "israel", "animated"]
+}

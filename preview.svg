@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700">
+  <rect width="1200" height="700" rx="28" fill="#0d0a05"/>
+  <rect y="42" width="1200" height="12" fill="#e8b923"/>
+  <rect y="646" width="1200" height="12" fill="#e8b923"/>
+  <rect x="48" y="82" width="194" height="532" rx="18" fill="#171003"/>
+  <rect x="272" y="82" width="880" height="532" rx="18" fill="#1b1408"/>
+  <text x="88" y="142" fill="#ffd54a" font-family="Arial,sans-serif" font-size="26" font-weight="700">Israel</text>
+  <g fill="#2b210d">
+    <rect x="78" y="185" width="130" height="16" rx="8"/><rect x="78" y="225" width="112" height="16" rx="8"/>
+    <rect x="78" y="265" width="140" height="16" rx="8"/><rect x="78" y="305" width="96" height="16" rx="8"/>
+  </g>
+  <g opacity=".32" fill="none" stroke="#ffd54a" stroke-width="10">
+    <path d="M720 160 965 584H475Z"/><path d="M720 584 965 160H475Z"/>
+  </g>
+  <g fill="#30240d">
+    <rect x="330" y="126" width="178" height="178" rx="12"/><rect x="532" y="126" width="178" height="178" rx="12"/>
+    <rect x="734" y="126" width="178" height="178" rx="12"/>
+  </g>
+  <g stroke="#ffd54a" stroke-width="10" fill="none" stroke-linejoin="round">
+    <path d="M720 188 800 326H640Z"/><path d="M720 326 800 188H640Z"/>
+  </g>
+  <g stroke="#e8b923" stroke-width="5" stroke-linecap="round">
+    <line x1="350" y1="510" x2="1030" y2="510"/>
+    <line x1="350" y1="510" x2="610" y2="510"/>
+  </g>
+  <circle cx="610" cy="510" r="12" fill="#ffd54a"/>
+  <text x="350" y="552" fill="#b99c51" font-family="Arial,sans-serif" font-size="17">Gold edition · bass-reactive star</text>
+</svg>
