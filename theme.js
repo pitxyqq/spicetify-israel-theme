@@ -6,7 +6,7 @@
  */
 (function israelGold() {
   "use strict";
-  if (window.israelGold) return;
+  if (window.israelGold) {  const old = document.getElementById("il-intro");  if (old) old.remove();  const el = document.createElement("div");  el.id = "il-intro";  el.innerHTML = '<svg viewBox="-100 -100 200 200" fill="none"><path pathLength="1" d="M0-80 69.3 40H-69.3Z"/><path pathLength="1" d="M0 80 69.3-40H-69.3Z"/></svg>';  document.body?.appendChild(el);  setTimeout(() => el.remove(), 2600);  return;}
 
   const SETTINGS = {
     intro: true,        // star draws itself when Spotify starts
@@ -246,7 +246,7 @@
   window.israelGold = { SETTINGS, bassMap, status: () => ({ ...song, hits: song.hits.length }) };
 
   (function wait() {
-    if (player()?.addEventListener && window.Spicetify.Platform?.Registry && star()) start();
+    if (player()?.addEventListener && star()) start();
     else setTimeout(wait, 200);
   })();
 })();
