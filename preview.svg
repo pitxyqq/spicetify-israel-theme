@@ -1,13 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700">
   <defs>
     <linearGradient id="stripe" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#e8b923"/>
-      <stop offset="0.5" stop-color="#ffd54a"/>
-      <stop offset="1" stop-color="#e8b923"/>
+      <stop offset="0" stop-color="#e8b923"/><stop offset="0.5" stop-color="#ffd54a"/><stop offset="1" stop-color="#e8b923"/>
     </linearGradient>
-    <linearGradient id="card" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#241905"/>
-      <stop offset="1" stop-color="#0d0902"/>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#241905"/><stop offset="1" stop-color="#0d0902"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2e210a"/><stop offset="1" stop-color="#100b03"/>
     </linearGradient>
   </defs>
 
@@ -15,66 +15,101 @@
   <rect y="42" width="1200" height="10" fill="url(#stripe)"/>
   <rect y="648" width="1200" height="10" fill="url(#stripe)"/>
 
-  <rect x="42" y="72" width="210" height="556" rx="18" fill="#140e03" stroke="#4d3912"/>
-  <rect x="272" y="72" width="886" height="556" rx="18" fill="url(#card)" stroke="#4d3912"/>
+  <rect x="36" y="70" width="198" height="556" rx="18" fill="#140e03" stroke="#4d3912"/>
+  <rect x="254" y="70" width="910" height="556" rx="18" fill="url(#bg)" stroke="#4d3912"/>
 
-  <text x="70" y="124" fill="#ffd54a" font-family="Arial,sans-serif" font-size="25" font-weight="700" letter-spacing="2">ISRAEL</text>
-  <text x="70" y="146" fill="#a98d4a" font-family="Arial,sans-serif" font-size="12" letter-spacing="3">GOLD EDITION</text>
-
-  <g stroke="#e8b923" stroke-width="2" fill="none" opacity="0.85">
-    <path d="M70 180h154M70 222h132M70 264h146M70 306h110"/>
+  <text x="66" y="120" fill="#ffd54a" font-family="Arial,sans-serif" font-size="23" font-weight="700" letter-spacing="2">ISRAEL</text>
+  <text x="66" y="142" fill="#a98d4a" font-family="Arial,sans-serif" font-size="11" letter-spacing="3">GOLD EDITION</text>
+  <g stroke="#e8b923" stroke-width="2" opacity="0.75">
+    <path d="M66 180h138M66 222h120M66 264h132M66 306h104"/>
   </g>
   <g fill="#2e210a" stroke="#e8b923" stroke-width="1.5">
-    <circle cx="84" cy="180" r="7"/><circle cx="84" cy="222" r="7"/>
-    <circle cx="84" cy="264" r="7"/><circle cx="84" cy="306" r="7"/>
+    <circle cx="80" cy="180" r="7"/><circle cx="80" cy="222" r="7"/><circle cx="80" cy="264" r="7"/><circle cx="80" cy="306" r="7"/>
+  </g>
+  <rect x="60" y="566" width="150" height="38" rx="10" fill="#3a2a0d" stroke="#e8b923" stroke-width="2"/>
+  <g fill="none" stroke="#ffd54a" stroke-width="8" transform="translate(80 585)">
+    <path d="M0-11 9 6H-9Z"/><path d="M0 11 9-6H-9Z"/>
+  </g>
+  <text x="112" y="590" fill="#ffd54a" font-family="Arial,sans-serif" font-size="12" font-weight="700">Israel Hub</text>
+
+  <!-- Hub window -->
+  <rect x="300" y="96" width="780" height="504" rx="22" fill="url(#panel)" stroke="#e8b923" stroke-width="2"/>
+  <rect x="300" y="160" width="780" height="2" fill="#4d3912"/>
+  <g fill="none" stroke="#ffd54a" stroke-width="9" transform="translate(340 128)">
+    <path d="M0-15 13 8H-13Z"/><path d="M0 15 13-8H-13Z"/>
+  </g>
+  <text x="374" y="123" fill="#ffd54a" font-family="Arial,sans-serif" font-size="19" font-weight="700">Israel Hub</text>
+  <text x="374" y="141" fill="#b99c51" font-family="Arial,sans-serif" font-size="11">Gold Edition · your Spotify, your skin</text>
+  <text x="1046" y="130" fill="#ffd54a" font-family="Arial,sans-serif" font-size="20" text-anchor="end">×</text>
+
+  <!-- Stage -->
+  <g opacity="0.18" fill="none" stroke="#ffd54a" stroke-width="8" transform="translate(520 330) scale(1.15)">
+    <path d="M0-80 69.3 40H-69.3Z"/><path d="M0 80 69.3-40H-69.3Z"/>
+  </g>
+  <rect x="472" y="202" width="124" height="124" rx="12" fill="#30240d" stroke="#e8b923" stroke-width="3"/>
+  <g fill="none" stroke="#ffd54a" stroke-width="7" transform="translate(534 264)">
+    <path d="M0-26 22 13H-22Z"/><path d="M0 26 22-13H-22Z"/>
+  </g>
+  <g fill="#ffd54a" opacity="0.9">
+    <rect x="446" y="404" width="5" height="26" rx="2"/><rect x="456" y="394" width="5" height="36" rx="2"/>
+    <rect x="466" y="382" width="5" height="48" rx="2"/><rect x="476" y="398" width="5" height="32" rx="2"/>
+    <rect x="486" y="372" width="5" height="58" rx="2"/><rect x="496" y="390" width="5" height="40" rx="2"/>
+    <rect x="506" y="378" width="5" height="52" rx="2"/><rect x="516" y="400" width="5" height="30" rx="2"/>
+    <rect x="526" y="368" width="5" height="62" rx="2"/><rect x="536" y="386" width="5" height="44" rx="2"/>
+    <rect x="546" y="376" width="5" height="54" rx="2"/><rect x="556" y="396" width="5" height="34" rx="2"/>
+    <rect x="566" y="384" width="5" height="46" rx="2"/><rect x="576" y="402" width="5" height="28" rx="2"/>
+    <rect x="586" y="370" width="5" height="60" rx="2"/><rect x="596" y="392" width="5" height="38" rx="2"/>
+  </g>
+  <text x="534" y="352" fill="#fff8e1" font-family="Arial,sans-serif" font-size="14" font-weight="700" text-anchor="middle">Track name</text>
+  <text x="534" y="366" fill="#e6cf96" font-family="Arial,sans-serif" font-size="11" text-anchor="middle">Artist</text>
+  <g transform="translate(534 458)">
+    <circle cx="-72" r="15" fill="#2e210a" stroke="#e8b923"/><circle cx="-36" r="15" fill="#2e210a" stroke="#e8b923"/>
+    <circle cy="0" r="24" fill="#e8b923"/><circle cx="36" r="15" fill="#2e210a" stroke="#e8b923"/>
+    <circle cx="72" r="15" fill="#2e210a" stroke="#e8b923"/>
+    <path d="M-8-8 9 0-8 8Z" fill="#171003" transform="translate(0 0)"/>
+    <path d="M-78-5 78-5" stroke="#4d3912" stroke-width="3"/>
+    <path d="M-78-5 -18-5" stroke="#ffd54a" stroke-width="3"/>
+  </g>
+  <rect x="450" y="506" width="168" height="5" rx="2" fill="#2e210a"/>
+  <rect x="450" y="506" width="70" height="5" rx="2" fill="#ffd54a"/>
+  <text x="450" y="528" fill="#e6cf96" font-family="Arial,sans-serif" font-size="10">1:12</text>
+  <text x="618" y="528" fill="#e6cf96" font-family="Arial,sans-serif" font-size="10" text-anchor="end">3:48</text>
+
+  <!-- Settings column -->
+  <line x1="700" y1="180" x2="700" y2="572" stroke="#4d3912"/>
+  <text x="726" y="196" fill="#e8b923" font-family="Arial,sans-serif" font-size="10" letter-spacing="2">PALETTE</text>
+  <g>
+    <circle cx="748" cy="222" r="16" fill="#e8b923" stroke="#ffe9a3" stroke-width="2"/>
+    <circle cx="798" cy="222" r="16" fill="#3c7df0"/>
+    <circle cx="848" cy="222" r="16" fill="#e6dcc4"/>
+    <text x="748" y="254" fill="#fff8e1" font-family="Arial,sans-serif" font-size="9" text-anchor="middle">Gold</text>
+    <text x="798" y="254" fill="#b99c51" font-family="Arial,sans-serif" font-size="9" text-anchor="middle">Blue</text>
+    <text x="848" y="254" fill="#b99c51" font-family="Arial,sans-serif" font-size="9" text-anchor="middle">Ivory</text>
+  </g>
+  <text x="726" y="286" fill="#e8b923" font-family="Arial,sans-serif" font-size="10" letter-spacing="2">SCENE</text>
+  <g fill="#2e210a" stroke="#e8b923">
+    <rect x="726" y="298" width="98" height="28" rx="7"/><rect x="834" y="298" width="98" height="28" rx="7"/>
+    <rect x="726" y="334" width="98" height="28" rx="7"/><rect x="834" y="334" width="98" height="28" rx="7"/>
+  </g>
+  <g fill="#ffd54a">
+    <circle cx="806" cy="312" r="7"/><circle cx="914" cy="312" r="7"/>
+  </g>
+  <g fill="#6b5622">
+    <circle cx="806" cy="348" r="7"/><circle cx="914" cy="348" r="7"/>
+  </g>
+  <text x="726" y="388" fill="#e8b923" font-family="Arial,sans-serif" font-size="10" letter-spacing="2">TUNE THE STAR</text>
+  <g stroke="#e8b923" stroke-width="2">
+    <path d="M726 410h196M726 440h196M726 470h196M726 500h196"/>
+  </g>
+  <g stroke="#ffd54a" stroke-width="4" stroke-linecap="round">
+    <path d="M726 410h96M726 440h130M726 470h60M726 500h160"/>
   </g>
 
-  <g opacity="0.3" fill="none" stroke="#ffd54a" stroke-width="11">
-    <path d="M720 150 975 585H465Z"/><path d="M720 585 975 150H465Z"/>
-  </g>
-
-  <g fill="#30240d" stroke="#4d3912">
-    <rect x="326" y="118" width="176" height="176" rx="12"/>
-    <rect x="526" y="118" width="176" height="176" rx="12"/>
-    <rect x="726" y="118" width="176" height="176" rx="12"/>
-  </g>
-  <g stroke="#ffd54a" stroke-width="11" fill="none" stroke-linejoin="round">
-    <path d="M720 178 802 322H638Z"/><path d="M720 322 802 178H638Z"/>
-  </g>
-
-  <g font-family="Arial,sans-serif" fill="#b99c51" font-size="14">
-    <text x="326" y="345" letter-spacing="3">HOME</text>
-    <text x="326" y="470" letter-spacing="3">TRACKS</text>
-  </g>
-  <g stroke="#e8b923" stroke-width="1.5" opacity="0.8">
-    <path d="M326 366h790M326 490h790"/>
-  </g>
-  <g fill="#2e210a" stroke="#4d3912">
-    <rect x="326" y="380" width="790" height="22" rx="6"/>
-    <rect x="326" y="412" width="720" height="22" rx="6"/>
-    <rect x="326" y="504" width="760" height="22" rx="6"/>
-    <rect x="326" y="536" width="680" height="22" rx="6"/>
-  </g>
-
-  <g transform="translate(1096 300)">
-    <rect x="-30" y="-120" width="60" height="300" rx="28" fill="#0d0902" stroke="#e8b923" stroke-width="2"/>
-    <g fill="none" stroke="#ffd54a" stroke-width="9">
-      <g transform="translate(0 -88)"><path d="M0-14 12 7H-12Z"/><path d="M0 14 12-7H-12Z"/><circle r="22"/></g>
-      <g transform="translate(0 -34)"><circle r="15"/><path d="M0-15a15 15 0 0 1 0 30Z" fill="#ffd54a" stroke="none"/></g>
-      <g transform="translate(0 20)"><path d="M-17 0h5l4-11 5 22 4-15 3 7 3-3h8"/></g>
-      <g transform="translate(0 74)"><path d="M14 0a14 14 0 1 1-4-10"/><path d="M14-10V0H4"/></g>
-      <g transform="translate(0 128)"><circle r="15"/><path d="M0-6v7"/><circle cy="-10" r="2" fill="#ffd54a" stroke="none"/></g>
-    </g>
-  </g>
-
-  <g transform="translate(326 596)">
+  <!-- Player strip -->
+  <g transform="translate(300 606)">
     <circle r="12" fill="#ffd54a"/>
-    <rect x="26" y="-3" width="640" height="6" rx="3" fill="#4d3912"/>
-    <rect x="26" y="-3" width="250" height="6" rx="3" fill="#ffd54a"/>
-    <g fill="#ffd54a" opacity="0.9">
-      <circle cx="726" cy="0" r="6"/><circle cx="760" cy="0" r="6"/><circle cx="794" cy="0" r="6"/>
-    </g>
+    <rect x="24" y="-3" width="580" height="6" rx="3" fill="#4d3912"/>
+    <rect x="24" y="-3" width="220" height="6" rx="3" fill="#ffd54a"/>
+    <text x="620" y="5" fill="#a98d4a" font-family="Arial,sans-serif" font-size="11">Israel · custom interface</text>
   </g>
-
-  <text x="1088" y="625" fill="#a98d4a" font-family="Arial,sans-serif" font-size="12" text-anchor="middle" letter-spacing="2">CONTROLS</text>
 </svg>

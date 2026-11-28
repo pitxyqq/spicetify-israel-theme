@@ -538,19 +538,19 @@ button[data-testid="play-button"]:hover > span:first-child {
 }
 .main-contextMenu-menuDivider { background: var(--il-line) !important; }
 
-[role="dialog"],
-[role="alertdialog"] {
+[role="dialog"]:not(.il-hub-panel):not(.il-card),
+[role="alertdialog"]:not(.il-hub-panel):not(.il-card) {
   background: #1b1408 !important;
   border: 1px solid var(--il-accent) !important;
   border-radius: 16px !important;
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.8), 0 0 30px var(--il-wash);
 }
-[role="dialog"] input,
-[role="dialog"] select {
+[role="dialog"]:not(.il-hub-panel) input,
+[role="dialog"]:not(.il-hub-panel) select {
   border-color: var(--il-line) !important;
   color: #fff8e1 !important;
 }
-[role="dialog"] button:hover { background: var(--il-wash) !important; }
+[role="dialog"]:not(.il-hub-panel):not(.il-card) button:hover { background: var(--il-wash) !important; }
 
 [role="tooltip"],
 [class*="tooltip"] {
@@ -796,4 +796,387 @@ button[data-testid="play-button"]:hover > span:first-child {
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
+}
+
+/* ================= Custom interface layer ================= */
+
+/* Brand chip centred in the top bar, and a pinned sidebar entry. */
+.il-brand {
+  position: fixed;
+  top: 6px;
+  left: 50%;
+  z-index: 9500;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 30px;
+  padding: 0 12px 0 8px;
+  border-radius: 999px;
+  border: 1px solid var(--il-line);
+  background: rgba(23, 16, 3, 0.74);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: var(--il-bright);
+  cursor: pointer;
+  font: 700 11px var(--il-font);
+  letter-spacing: 0.18em;
+  opacity: 0.78;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6), inset 0 0 12px var(--il-wash);
+  transition: opacity 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+.il-brand:hover { opacity: 1; transform: translateX(-50%) translateY(1px); box-shadow: 0 0 22px var(--il-wash); }
+.il-brand svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 12; }
+.il-brand::after {
+  content: "";
+  width: 32px;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--il-accent), var(--il-bright));
+}
+
+.il-nav {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 11px;
+  border: 1px solid var(--il-accent);
+  background: linear-gradient(90deg, var(--il-deep), rgba(23, 16, 3, 0.9));
+  color: var(--il-bright);
+  cursor: pointer;
+  font: 600 12px var(--il-font);
+  box-shadow: inset 3px 0 0 var(--il-accent), 0 6px 18px rgba(0, 0, 0, 0.55);
+  transition: background 0.15s, transform 0.15s;
+}
+.il-nav:hover { transform: translateX(3px); background: var(--il-wash); }
+.il-nav svg { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 12; }
+.il-nav kbd {
+  margin-left: auto;
+  padding: 2px 5px;
+  border-radius: 5px;
+  border: 1px solid var(--il-line);
+  color: #b99c51;
+  font: 10px var(--il-font);
+}
+button[title="Israel Hub"] { color: var(--il-bright) !important; }
+button[title="Israel Hub"] svg { filter: drop-shadow(0 0 6px var(--il-accent)); }
+
+/* ---------- Israel Hub ---------- */
+
+.il-hub { z-index: 99990; }
+.il-hub-panel {
+  width: min(1020px, 95vw);
+  max-height: 92vh;
+  overflow: auto;
+  border-radius: 22px;
+  border: 1px solid var(--il-accent);
+  background: linear-gradient(160deg, rgba(46, 33, 10, 0.98), rgba(13, 9, 2, 0.99) 65%);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.85), 0 0 50px var(--il-wash);
+  color: #fff8e1;
+}
+.il-hub-head {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--il-line);
+}
+.il-hub-head::after {
+  content: "";
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  bottom: -1px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--il-accent), transparent 60%);
+}
+.il-hub-mark {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  flex: 0 0 46px;
+  border-radius: 13px;
+  background: var(--il-accent);
+  color: var(--il-ink);
+}
+.il-hub-mark svg { width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 12; }
+.il-hub-head h2 { margin: 0; font-size: 21px; color: var(--il-bright); letter-spacing: 0.02em; }
+.il-hub-head p { margin: 3px 0 0; font-size: 12px; color: #b99c51; }
+.il-hub-close {
+  margin-left: auto;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  border: 1px solid var(--il-line);
+  background: transparent;
+  color: var(--il-bright);
+  cursor: pointer;
+}
+.il-hub-close:hover { background: var(--il-wash); }
+.il-hub-close svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; }
+
+.il-hub-body { display: grid; grid-template-columns: 1.1fr 0.9fr; }
+.il-hub-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 11px;
+  padding: 22px 24px 24px;
+  overflow: hidden;
+  border-right: 1px solid var(--il-line);
+  background: radial-gradient(circle at 50% 28%, var(--il-wash), transparent 62%);
+}
+.il-hub-star {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  width: 270px;
+  height: 270px;
+  margin-left: -135px;
+  background-color: var(--il-accent);
+  -webkit-mask: var(--il-star-mask) center / contain no-repeat;
+  mask: var(--il-star-mask) center / contain no-repeat;
+  opacity: 0.16;
+  pointer-events: none;
+  animation: il-spin 40s linear infinite;
+  will-change: transform, scale;
+}
+#il-viz {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 42%;
+  pointer-events: none;
+  opacity: 0.9;
+}
+html[data-il-viz="off"] #il-viz { opacity: 0; }
+#il-cover {
+  position: relative;
+  z-index: 1;
+  width: 148px;
+  height: 148px;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 2px solid var(--il-accent);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.75), 0 0 24px var(--il-wash);
+  transition: opacity 0.2s;
+}
+.il-hub-meta { position: relative; z-index: 1; text-align: center; }
+.il-hub-meta h3 { margin: 0; font-size: 19px; color: var(--il-bright); }
+.il-hub-meta p { margin: 3px 0 0; font-size: 12px; color: #e6cf96; }
+
+.il-hub-transport { position: relative; z-index: 1; display: flex; align-items: center; gap: 8px; }
+.il-hub-transport button {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--il-line);
+  background: rgba(0, 0, 0, 0.38);
+  color: var(--il-bright);
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+.il-hub-transport button:hover { background: var(--il-wash); border-color: var(--il-accent); transform: scale(1.1); }
+.il-hub-transport button[aria-pressed="true"] { background: var(--il-accent); color: var(--il-ink); box-shadow: 0 0 14px var(--il-wash); }
+.il-hub-transport .il-hub-play {
+  width: 50px;
+  height: 50px;
+  background: var(--il-accent);
+  color: var(--il-ink);
+  border-color: var(--il-accent);
+  box-shadow: 0 0 24px var(--il-wash);
+}
+.il-hub-transport .il-hub-play:hover { background: var(--il-bright); color: var(--il-ink); }
+.il-hub-transport svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.il-hub-transport [data-hub="prev"] svg,
+.il-hub-transport [data-hub="next"] svg,
+.il-hub-transport .il-hub-play svg { fill: currentColor; stroke: none; }
+
+.il-hub-times {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 380px;
+  font-size: 11px;
+  color: #e6cf96;
+  font-variant-numeric: tabular-nums;
+}
+.il-range {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 380px;
+  accent-color: var(--il-accent);
+  cursor: pointer;
+}
+.il-hub-volume { position: relative; z-index: 1; display: flex; align-items: center; gap: 8px; width: 100%; max-width: 380px; }
+.il-hub-volume svg { width: 18px; height: 18px; flex: 0 0 auto; fill: none; stroke: var(--il-bright); stroke-width: 2; }
+.il-hub-volume .il-range { max-width: none; }
+.il-hub-volume span { min-width: 34px; font-size: 11px; color: var(--il-bright); text-align: right; }
+
+/* ---------- Hub settings column ---------- */
+
+.il-hub-side { padding: 20px 22px; background: rgba(0, 0, 0, 0.16); }
+.il-hub-side h4 {
+  margin: 18px 0 10px;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--il-accent);
+}
+.il-hub-side h4:first-child { margin-top: 0; }
+.il-swatches { display: flex; gap: 8px; }
+.il-swatch {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 4px;
+  border-radius: 12px;
+  border: 1px solid var(--il-line);
+  background: rgba(255, 255, 255, 0.03);
+  color: #e6cf96;
+  cursor: pointer;
+  font-size: 11px;
+}
+.il-swatch span {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--swatch);
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.5);
+}
+.il-swatch em { font-style: normal; }
+.il-swatch.is-active { border-color: var(--swatch); color: #fff; box-shadow: 0 0 18px var(--il-wash); }
+.il-swatch:hover { background: var(--il-wash); }
+
+.il-hub-toggles { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+.il-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 9px;
+  border: 1px solid var(--il-line);
+  background: rgba(255, 255, 255, 0.03);
+  color: #e6cf96;
+  cursor: pointer;
+  font-size: 12px;
+}
+.il-toggle i {
+  position: relative;
+  width: 30px;
+  height: 16px;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: var(--il-deep);
+  transition: background 0.15s;
+}
+.il-toggle i::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #e6cf96;
+  transition: transform 0.15s;
+}
+.il-toggle[aria-pressed="true"] { color: var(--il-bright); border-color: var(--il-accent); }
+.il-toggle[aria-pressed="true"] i { background: var(--il-accent); }
+.il-toggle[aria-pressed="true"] i::after { transform: translateX(14px); background: var(--il-ink); }
+
+.il-sliders { display: grid; gap: 10px; }
+.il-slider { display: grid; gap: 4px; font-size: 11px; color: #e6cf96; }
+.il-slider > span { display: flex; justify-content: space-between; }
+.il-slider em { font-style: normal; color: var(--il-bright); }
+.il-slider input { width: 100%; accent-color: var(--il-accent); }
+
+.il-hub-links { display: flex; flex-wrap: wrap; gap: 7px; }
+.il-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--il-line);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--il-bright);
+  cursor: pointer;
+  font-size: 11px;
+}
+.il-link:hover { background: var(--il-wash); border-color: var(--il-accent); }
+.il-link svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; }
+.il-hub-note { margin: 14px 0 0; font-size: 10px; color: #b99c51; }
+.il-hub-foot {
+  padding: 12px 22px;
+  border-top: 1px solid var(--il-line);
+  font-size: 10px;
+  color: #b99c51;
+  letter-spacing: 0.04em;
+}
+
+/* ---------- Structural details in the client ---------- */
+
+/* A ribbon under playlist/album headers ties the header to the flag. */
+.main-entityHeader-backgroundColor::after {
+  content: "✦";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 14px;
+  line-height: 14px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--il-bright);
+  background: linear-gradient(90deg, transparent, var(--il-wash) 40%, var(--il-wash) 60%, transparent);
+  pointer-events: none;
+}
+/* The playing row gets a pulsing star instead of a plain index number. */
+.main-trackList-trackListRow[aria-selected="true"] .main-trackList-rowSectionIndex { font-size: 0 !important; }
+.main-trackList-trackListRow[aria-selected="true"] .main-trackList-rowSectionIndex::before {
+  content: "✦";
+  font-size: 15px;
+  color: var(--il-bright);
+  text-shadow: 0 0 10px var(--il-accent);
+  animation: il-pulse 1s ease-in-out infinite alternate;
+}
+@keyframes il-pulse { to { transform: scale(1.28); opacity: 0.65; } }
+
+@media (max-width: 880px) {
+  .il-hub-body { grid-template-columns: 1fr; }
+  .il-hub-stage { border-right: none; border-bottom: 1px solid var(--il-line); }
+  .il-brand { display: none; }
+  .il-nav kbd { display: none; }
 }

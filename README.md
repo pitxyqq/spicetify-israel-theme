@@ -1,28 +1,43 @@
 # Israel · Gold Edition
 
-A complete Spicetify skin built around the Israeli flag: a bright stripe under the
-top bar, another above the player, and a slowly turning Star of David behind the
-content. Every part of Spotify is restyled — sidebar, headers, cards, track list,
-transport buttons, sliders, lyrics, queue, menus, dialogs, tooltips and scrollbars.
+This is a **custom interface layer** for Spotify, not a recolour. It keeps the
+flag-inspired look (gold stripes, Star of David, dark panels) and adds real UI
+that lives inside the client: a dashboard, custom controls, navigation entries,
+a waveform visualizer and live theme tuning.
 
-## What's included
+## What it actually adds
 
-- **Custom control dock** in the bottom-right corner with five buttons:
-  - Star of David on/off
-  - Palette: Gold → Blue → Ivory
-  - Bass-reactive hits on/off
-  - Star spin on/off
-  - Shortcuts panel (and a reset button)
-- **Custom look everywhere**
-  - Gold/blue/ivory buttons, circular play button, glowing active shuffle/repeat/like
-  - Gold progress and volume sliders, scrubber thumb and selection colour
-  - Gold sidebar navigation with active rail, hover shift and star watermark
-  - Framed artwork, shimmering card hovers, gold track rows and headers
-  - Star-animated intro at startup
-- **Bass-reactive visuals** that read Spotify's own waveform metadata and pulse the
-  star, stripes, player and controls on real bass hits. Quiet passages stay still.
-- **Three colour schemes** in `color.ini` (`base` = Gold, `blue`, `ivory`).
-- Everything is local to this folder. No CDN and no account/playlist changes.
+### Israel Hub (`Alt+U`)
+
+A full custom dashboard, opened from the dock, the pinned sidebar entry, the
+topbar star button, the right-click menu, or `Alt+U`. It contains:
+
+- **Working transport** built from scratch: play/pause, previous, next,
+  shuffle, repeat, like, seek bar and volume slider (these use Spotify normally).
+- **Live track display**: artwork, title, artist, elapsed/total time.
+- **Waveform visualizer**: 48 animated bars drawn from Spotify's own 3-band
+  waveform metadata — lows are gold, mids and highs fill out the rest. It only
+  draws when the hub is open and a song is playing.
+- **Palette swatches**: Gold / Blue / Ivory, switched instantly.
+- **Scene toggles**: star, bass hits, spin, visualizer.
+- **Live sliders**: star opacity, star size, spin time, bass filter, hit strength
+  and hit offset. Changes apply immediately and persist.
+- **Quick navigation**: Home, Search, Liked Songs, and copy the current track
+  link.
+
+### Custom controls everywhere
+
+- A six-button floating dock (hub, star, palette, bass, spin, help).
+- A fixed "ISRAEL" brand chip in the top bar.
+- A pinned "Israel Hub" sidebar entry with a shortcut hint.
+- A star button in Spotify's native top bar plus two right-click menu entries
+  ("Open Israel Hub", "Toggle Israel star") when those APIs are available.
+- Custom tooltips, toasts and a help dialog.
+- Restyled stock controls: circular gold play button, glowing active
+  shuffle/repeat/like, gold sliders, star marker on the playing track row,
+  shimmering cards, framed artwork, themed menus, dialogs and scrollbars.
+- A drawn star intro at startup and bass-reactive pulses across the star,
+  stripes, player, dock and hub.
 
 ## Install
 
@@ -33,66 +48,66 @@ spicetify config current_theme Israel color_scheme base
 spicetify apply
 ```
 
-Optional built-in schemes:
+Make sure `inject_css = 1` and `inject_theme_js = 1` in `config-xpui.ini`. Both
+`user.css` and `theme.js` load locally — no CDN, no separate extension.
 
-```powershell
-spicetify config current_theme Israel color_scheme blue
-spicetify config current_theme Israel color_scheme ivory
-spicetify apply
-```
-
-Make sure `inject_css = 1` and `inject_theme_js = 1` in `config-xpui.ini` so both
-`user.css` and `theme.js` are loaded. No separate extension is needed.
+Built-in Spicetify schemes: `base` (Gold), `blue`, `ivory`.
 
 ## Shortcuts
 
 | Keys | Action |
 | --- | --- |
+| `Alt` + `U` | Open / close Israel Hub |
 | `Alt` + `I` | Toggle the Star of David |
 | `Alt` + `P` | Cycle Gold / Blue / Ivory |
 | `Alt` + `B` | Toggle bass hits |
 | `Alt` + `S` | Pause or resume the star spin |
-| `Alt` + `H` | Open the shortcuts panel |
-| `Esc` | Close the panel |
+| `Alt` + `H` | Open the help panel |
+| `Esc` | Close the topmost panel |
+| `Ctrl` + `Alt` + `←` / `→` | Seek 10 seconds |
+| `Ctrl` + `Alt` + `↑` / `↓` | Change volume |
 
-Settings are saved automatically and restored on the next Spotify start. The panel
-also has a one-click reset.
+All theme settings save themselves; the help panel has a one-click reset.
 
 ## Tweak it
 
-Open `user.css` and edit the tokens at the top:
+`user.css` starts with the visual tokens:
 
 ```css
 :root {
-  --il-star-opacity: 0.5; /* 0 = hidden, 1 = solid */
+  --il-star-opacity: 0.5;
   --il-star-size: 78vmin;
   --il-stripe: 6px;
-  --il-spin-time: 30s;    /* lower = faster */
+  --il-spin-time: 30s;
 }
 ```
 
-`theme.js` keeps its own tunables at the top:
+`theme.js` starts with the behaviour defaults:
 
 ```js
-strict: 0.5,  // 0.35 = more bass hits, 0.65 = only the heaviest
-punch: 0.22,  // how far the star jumps on a full hit
-offsetMs: 0,  // raise if hits look early (Bluetooth), lower if late
+strict: 0.5,       // bass filter: lower = more hits
+punch: 0.22,       // hit strength
+offsetMs: 0,       // shift hits earlier/later
+pausedSpeed: 0.2   // spin speed while paused
 ```
+
+The hub sliders override these at runtime and save the result.
 
 ## Files
 
 | File | Purpose |
 | --- | --- |
-| `user.css` | The full visual skin and custom UI components |
-| `theme.js` | Control dock, shortcuts, intro and bass-reactive animation |
-| `color.ini` | The three Spicetify colour schemes |
-| `manifest.json` | Theme metadata (JS is loaded locally from `theme.js`) |
-| `preview.svg` | Marketplace/preview artwork |
+| `user.css` | Full skin plus all custom component CSS |
+| `theme.js` | Hub, dock, visualizer, shortcuts, intro, bass engine |
+| `color.ini` | Three Spicetify colour schemes |
+| `manifest.json` | Theme metadata (JS loads locally) |
+| `preview.svg` | Preview artwork |
 
 ## Notes
 
-- The animation only **reads** song metadata; it never changes playback, likes or
-  account data.
+- Waveform data is only read. It never alters playback or account data.
+- Transport controls in the hub are the only controls that act on playback, and
+  they do exactly what Spotify's own buttons do.
 - `prefers-reduced-motion` is respected: the intro is skipped and animations stop.
-- If Spotify changes a class name after an update, run `spicetify restore backup apply`
-  and re-apply the theme.
+- After a Spotify update breaks a class name, run
+  `spicetify restore backup apply`, then re-apply the theme.
