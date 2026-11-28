@@ -1,76 +1,27 @@
-/* Israel · Gold Edition — a complete Spotify skin
+/* Israel: gold edition
+ * The window is laid out like the flag: a gold stripe under the top bar, a gold
+ * stripe above the player, and the Star of David between them in the main view.
+ * The star is painted BEHIND the content, so it never covers text or artwork.
  *
- * Layout idea: the window is the flag. A bright stripe under the top bar, a
- * bright stripe above the player, and a slowly turning Star of David between
- * them behind all content. Everything else — sidebar, buttons, menus, cards,
- * lyrics, scrollbars — is painted in the same language.
- *
- * Quick tweaks live in :root. The corner dock can switch palette, star, spin
- * and bass hits at runtime (Alt+P / Alt+I / Alt+S / Alt+B).
- */
-
-/* ---------- Tokens ---------- */
-
+ * Easy tweaks: */
 :root {
-  --il-star-opacity: 0.5;
+  --il-star-opacity: 0.5;    /* 0 = hidden, 1 = solid */
   --il-star-size: 78vmin;
   --il-stripe: 6px;
-  --il-spin-time: 30s;
+  --il-spin-time: 30s;       /* one full turn; lower = faster */
 
-  --il-accent: #e8b923;
-  --il-bright: #ffd54a;
-  --il-deep: #3a2a0d;
-  --il-stripe-color: #e8b923;
+  --il-gold: #e8b923;
+  --il-line: rgba(232, 185, 35, 0.4);
   --il-ink: #171003;
-  --il-line: rgba(232, 185, 35, 0.42);
-  --il-wash: rgba(232, 185, 35, 0.14);
-  --il-gold: var(--il-accent); /* alias for older custom CSS */
-  --il-metal: var(--il-accent);
-  --il-radius: 12px;
-  --il-font: "Segoe UI Variable", "Segoe UI", "David", Arial, sans-serif;
-
-  --il-star-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-100 -100 200 200'%3E%3Cg fill='none' stroke='%23000' stroke-width='12'%3E%3Cpath d='M0-80 69.3 40H-69.3Z'/%3E%3Cpath d='M0 80 69.3-40H-69.3Z'/%3E%3C/g%3E%3C/svg%3E");
+  --il-metal: #e8b923;
 }
 
-:root[data-il-scheme="blue"] {
-  --il-accent: #3c7df0;
-  --il-bright: #a9ceff;
-  --il-deep: #102a63;
-  --il-stripe-color: #2f6fe4;
-  --il-ink: #020a1c;
-  --il-line: rgba(120, 175, 255, 0.44);
-  --il-wash: rgba(90, 150, 255, 0.16);
-}
-
-:root[data-il-scheme="ivory"] {
-  --il-accent: #e6dcc4;
-  --il-bright: #fff6df;
-  --il-deep: #3a3325;
-  --il-stripe-color: #f2ead6;
-  --il-ink: #1c1811;
-  --il-line: rgba(240, 232, 210, 0.42);
-  --il-wash: rgba(240, 232, 210, 0.12);
-}
-
-/* ---------- Global ---------- */
-
-html, body {
-  font-family: var(--il-font) !important;
-  color: #fff8e1;
-}
-
-* { scrollbar-color: var(--il-accent) transparent; }
-
-::selection { background: var(--il-accent); color: var(--il-ink); }
-:focus-visible { outline: 2px solid var(--il-bright) !important; outline-offset: 2px; }
-
-/* Colours Spotify otherwise leaves grey or green. */
+/* ---------- Colours Spicetify leaves grey or green ---------- */
 .encore-dark-theme,
 .encore-dark-theme .encore-base-set {
   --background-elevated-press: #241a07;
   --essential-subdued: #a98d4a;
-  --decorative-subdued: var(--il-deep);
-  --text-subdued: #e6cf96;
+  --decorative-subdued: #4d3912;
 }
 .encore-dark-theme .encore-bright-accent-set,
 .encore-dark-theme .encore-positive-set {
@@ -81,37 +32,24 @@ html, body {
 }
 .encore-dark-theme .encore-inverted-light-set,
 .encore-dark-theme .encore-inverted-set {
-  --background-base: var(--il-bright);
+  --background-base: #ffd54a;
   --background-highlight: #ffe9a3;
   --background-press: #d19f14;
-  --text-base: var(--il-ink);
-  --text-subdued: var(--il-deep);
+  --text-base: #171003;
+  --text-subdued: #3a2a0d;
 }
 
-/* ---------- Shells and panels ---------- */
-
+/* ---------- Panels ---------- */
 .Root__main-view {
-  position: relative;
   isolation: isolate;
-  border-radius: 14px;
-  background: radial-gradient(ellipse 100% 90% at 50% 50%, var(--il-deep) 0%, #0d0902 100%) !important;
+  border-radius: 10px;
+  background: radial-gradient(ellipse 100% 90% at 50% 50%, #241905 0%, #0d0902 100%) !important;
 }
 .Root__nav-bar {
-  position: relative;
-  isolation: isolate;
-  border-radius: 14px;
-  background: linear-gradient(180deg, var(--il-deep) 0%, #0d0902 100%) !important;
-}
-.Root__globalNav {
-  position: relative;
+  border-radius: 10px;
   background: #0d0902 !important;
 }
-.Root__now-playing-bar {
-  position: relative;
-  background: linear-gradient(180deg, #140e03, #0b0802) !important;
-}
-
-/* Inset gold frames, drawn as overlays so the layout never shifts. */
+/* An inset overlay draws the gold frame without changing the layout. */
 .Root__main-view::after,
 .Root__nav-bar::after {
   content: "";
@@ -119,50 +57,18 @@ html, body {
   inset: 0;
   z-index: 20;
   border: 1px solid var(--il-line);
-  border-radius: 14px;
-  box-shadow: inset 0 0 28px rgba(0, 0, 0, 0.55);
+  border-radius: 10px;
   pointer-events: none;
-}
-.Root__nav-bar::after { z-index: 12; }
-
-/* A quiet star watermark low in the sidebar. */
-.Root__nav-bar::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 4%;
-  margin: auto;
-  width: 170px;
-  height: 170px;
-  z-index: -1;
-  background-color: var(--il-accent);
-  -webkit-mask: var(--il-star-mask) center / contain no-repeat;
-  mask: var(--il-star-mask) center / contain no-repeat;
-  opacity: 0.07;
-  pointer-events: none;
-  animation: il-spin calc(var(--il-spin-time) * 2) linear infinite;
-}
-
-/* Soft light bleeding out of the player. */
-.Root__now-playing-bar::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.12;
-  box-shadow: inset 0 0 44px var(--il-accent);
-}
-.Root__globalNav::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(90deg, var(--il-wash), transparent 30%, transparent 70%, var(--il-wash));
 }
 
 /* ---------- Flag stripes ---------- */
-
+.Root__globalNav {
+  background: #0d0902 !important;
+}
+.Root__now-playing-bar {
+  position: relative;
+  background: #0d0902 !important;
+}
 .Root__globalNav::after,
 .Root__now-playing-bar::before {
   content: "";
@@ -170,19 +76,13 @@ html, body {
   left: 0;
   right: 0;
   height: var(--il-stripe);
-  background: linear-gradient(90deg, var(--il-stripe-color), var(--il-bright) 50%, var(--il-stripe-color));
-  background-size: 200% 100%;
-  box-shadow: 0 0 16px var(--il-wash);
-  animation: il-shimmer 9s linear infinite;
+  background: var(--il-gold);
   pointer-events: none;
-  transform-origin: bottom;
 }
-.Root__globalNav::after { bottom: 0; }
+.Root__globalNav::after { bottom: 0; transform-origin: bottom; }
 .Root__now-playing-bar::before { top: 0; transform-origin: top; }
-@keyframes il-shimmer { to { background-position: 200% 0; } }
 
 /* ---------- Star of David ---------- */
-
 .Root__main-view::before {
   content: "";
   position: absolute;
@@ -191,21 +91,13 @@ html, body {
   z-index: -1;
   width: var(--il-star-size);
   height: var(--il-star-size);
-  background-color: var(--il-accent);
-  -webkit-mask: var(--il-star-mask) center / contain no-repeat;
-  mask: var(--il-star-mask) center / contain no-repeat;
   opacity: var(--il-star-opacity);
   pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-100 -100 200 200'%3E%3Cg fill='none' stroke='%23e8b923' stroke-width='12'%3E%3Cpath d='M0-80 69.3 40H-69.3Z'/%3E%3Cpath d='M0 80 69.3-40H-69.3Z'/%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat;
   will-change: transform, scale, opacity;
   animation: il-spin var(--il-spin-time) linear infinite;
-  filter: drop-shadow(0 0 22px var(--il-wash));
 }
 @keyframes il-spin { to { transform: rotate(360deg); } }
-
-html[data-il-star="off"] .Root__main-view::before,
-html[data-il-star="off"] .Root__nav-bar::before { display: none; }
-html[data-il-spin="off"] .Root__main-view::before,
-html[data-il-spin="off"] .Root__nav-bar::before { animation-play-state: paused; }
 
 /* Let the star show through the layers Spotify paints above it. */
 .main-view-container,
@@ -214,14 +106,22 @@ html[data-il-spin="off"] .Root__nav-bar::before { animation-play-state: paused; 
 .main-gridContainer-gridContainer,
 .playlist-playlist-playlistContent,
 .playlist-playlist-concertsFooter,
+/* Unnamed content wrappers with the same solid background on other pages */
 .Root__main-view .bHSUaaRqd3emBoViqd_b,
 .Root__main-view .fmJtSKRbaIwuGI4eOWBt,
 .Root__main-view .CU6UW9KzAHCdO5xqbBbf {
   background: transparent !important;
 }
+.main-home-homeHeader {
+  background: linear-gradient(180deg, rgba(232, 185, 35, 0.18), transparent) !important;
+}
+/* Spotify sets the artwork colour inline here (purple on Liked Songs), so clear
+   the colour as well as the gradient. */
+[class*="actionBarBackground-background"] {
+  background: none !important;
+}
 
-/* ---------- Startup intro ---------- */
-
+/* ---------- Intro: the star draws itself once at startup ---------- */
 #il-intro {
   position: fixed;
   inset: 0;
@@ -229,17 +129,17 @@ html[data-il-spin="off"] .Root__nav-bar::before { animation-play-state: paused; 
   display: grid;
   place-items: center;
   pointer-events: none;
-  background: radial-gradient(circle, rgba(58, 42, 13, 0.97), rgba(13, 9, 2, 0.98));
+  background: radial-gradient(circle, rgba(58, 42, 13, 0.97), rgba(13, 9, 2, 0.97));
   animation: il-fade 0.7s 1.7s ease-in forwards;
 }
 #il-intro svg {
   width: 46vmin;
   overflow: visible;
-  filter: drop-shadow(0 0 22px var(--il-accent));
+  filter: drop-shadow(0 0 18px rgba(255, 213, 74, 0.8));
   animation: il-zoom 0.7s 1.7s ease-in forwards;
 }
 #il-intro path {
-  stroke: var(--il-bright);
+  stroke: #ffd54a;
   stroke-width: 9;
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
@@ -250,933 +150,95 @@ html[data-il-spin="off"] .Root__nav-bar::before { animation-play-state: paused; 
 @keyframes il-fade { to { opacity: 0; } }
 @keyframes il-zoom { to { transform: scale(2.6); } }
 
-/* ---------- Top bar ---------- */
-
-.main-topBar-background { background-color: #171003 !important; }
-.main-globalNav-searchInputContainer .main-topBar-searchBar {
-  background: rgba(0, 0, 0, 0.45) !important;
-  border-radius: 999px !important;
-  box-shadow: inset 0 0 0 1px var(--il-line) !important;
-}
-.main-globalNav-searchInputContainer .main-topBar-searchBar:hover {
-  box-shadow: inset 0 0 0 1px var(--il-accent) !important;
-}
-.main-globalNav-searchInputContainer .main-topBar-searchBar:focus-within {
-  box-shadow: inset 0 0 0 2px var(--il-bright), 0 0 16px var(--il-wash) !important;
-}
-.main-globalNav-searchInputContainer input { color: #fff8e1 !important; }
-.main-globalNav-searchInputContainer input::placeholder { color: #a98d4a !important; }
-
-.main-globalNav-button,
-button[aria-label="Go back"],
-button[aria-label="Go forward"] {
-  color: var(--il-bright) !important;
-  transition: transform 0.15s, color 0.15s;
-}
-.main-globalNav-button:hover,
-button[aria-label="Go back"]:hover,
-button[aria-label="Go forward"]:hover { transform: scale(1.08); color: var(--il-accent) !important; }
-
-.main-avatar-avatar,
-[data-testid="user-avatar"] img {
-  box-shadow: 0 0 0 2px var(--il-accent), 0 0 14px var(--il-wash);
-}
-
-/* ---------- Sidebar / library ---------- */
-
-.main-rootlist-rootlistTitle,
-.main-navNav-linkTitle,
-.left-sidebar-library-title {
-  color: var(--il-bright) !important;
-  letter-spacing: 0.08em;
-  font-weight: 700 !important;
-}
-.main-navNav-navLink {
-  position: relative;
-  border-radius: 10px !important;
-  color: #e6cf96 !important;
-  transition: background 0.15s, color 0.15s, transform 0.15s;
-}
-.main-navNav-navLink:hover {
-  background: var(--il-wash) !important;
-  color: var(--il-bright) !important;
-  transform: translateX(2px);
-}
-.main-navNav-navLinkActive,
-.main-navNav-navLink[aria-current="page"] {
-  background: linear-gradient(90deg, var(--il-wash), transparent) !important;
-  color: var(--il-bright) !important;
-  box-shadow: inset 3px 0 0 var(--il-accent);
-}
-.main-navNav-navLink svg { color: currentColor !important; }
-
-.main-rootlist-rootlistItemLink,
-.main-library-libraryItem {
-  border-radius: 10px !important;
-  transition: background 0.15s, box-shadow 0.15s;
-}
-.main-rootlist-rootlistItemLink:hover,
-.main-library-libraryItem:hover {
-  background: var(--il-wash) !important;
-  box-shadow: inset 3px 0 0 var(--il-accent);
-}
-.main-rootlist-rootlistItem img,
-.main-library-libraryItem img { border-radius: 8px !important; }
-
-.main-rootlist-playlistRow,
-.main-rootlist-artistRow { color: #e6cf96 !important; }
-.main-rootlist-highlightColor { color: var(--il-bright) !important; }
-.main-leftSidebar-collapseButton:hover { color: var(--il-bright) !important; }
-
-/* ---------- Headers ---------- */
-
-.main-home-homeHeader {
-  background: linear-gradient(180deg, var(--il-wash), transparent) !important;
-}
+/* ---------- Page headers ---------- */
 .main-entityHeader-backgroundColor {
   background-color: transparent !important;
-  background-image: linear-gradient(180deg, var(--il-wash), transparent) !important;
+  background-image: linear-gradient(180deg, rgba(232, 185, 35, 0.2), transparent) !important;
 }
 .main-entityHeader-title,
-.main-entityHeader-title * {
-  color: var(--il-bright) !important;
-  letter-spacing: 0.01em;
-}
+.main-entityHeader-title * { color: #ffd54a !important; }
 .main-entityHeader-title { text-shadow: 0 3px 0 rgba(0, 0, 0, 0.85); }
 .main-entityHeader-image {
-  box-shadow: 0 0 0 3px var(--il-accent), 0 10px 30px rgba(0, 0, 0, 0.85) !important;
-  border-radius: 8px !important;
+  box-shadow: 0 0 0 3px var(--il-gold), 0 8px 24px rgba(0, 0, 0, 0.8) !important;
 }
-.main-entityHeader-subtitle,
-.main-entityHeader-description { color: #e6cf96 !important; }
-/* Spotify sets artwork colour inline here (purple on Liked Songs). */
-[class*="actionBarBackground-background"] { background: none !important; }
+.main-topBar-background {
+  background-color: #171003 !important;
+}
 
-.main-genericHeader-title,
-.main-pageHeader-title { color: var(--il-bright) !important; }
+/* ---------- Track list ---------- */
+.main-trackList-trackListHeaderRow {
+  border-bottom-color: var(--il-line) !important;
+}
+.main-trackList-trackListRow:hover {
+  background: rgba(232, 185, 35, 0.2) !important;
+  box-shadow: inset 4px 0 0 #ffd54a;
+}
+.main-trackList-trackListRow[aria-selected="true"] {
+  background-color: rgba(232, 185, 35, 0.32) !important;
+}
+.main-trackList-trackListRow { text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85); }
+.main-trackList-rowMainContentTitle { font-weight: 600; }
+/* Current song (unnamed Spotify class, may change in an update) */
+.main-trackList-trackListRow.Q_VN_DjnfmJnnbShT4rU {
+  background: rgba(232, 185, 35, 0.32) !important;
+  box-shadow: inset 4px 0 0 #ffd54a;
+}
 
 /* ---------- Cards and home shortcuts ---------- */
-
 .main-card-card,
 .view-homeShortcutsGrid-shortcut {
-  position: relative;
-  overflow: hidden;
   background-color: rgba(23, 16, 3, 0.92) !important;
-  border-radius: var(--il-radius) !important;
   box-shadow: inset 0 0 0 1px var(--il-line);
-  transition: background-color 0.15s, box-shadow 0.15s, transform 0.15s;
-}
-.main-card-card::after,
-.view-homeShortcutsGrid-shortcut::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(115deg, transparent 35%, var(--il-wash) 50%, transparent 65%);
-  transform: translateX(-120%);
-  transition: transform 0.5s ease;
+  transition: background-color 0.12s, box-shadow 0.12s;
 }
 .main-card-card:hover,
 .view-homeShortcutsGrid-shortcut:hover {
-  background-color: var(--il-deep) !important;
-  box-shadow: inset 0 0 0 2px var(--il-accent), 0 10px 26px rgba(0, 0, 0, 0.6);
-  transform: translateY(-3px);
+  background-color: #3a2a0d !important;
+  box-shadow: inset 0 0 0 2px var(--il-gold);
 }
-.main-card-card:hover::after,
-.view-homeShortcutsGrid-shortcut:hover::after { transform: translateX(120%); }
-.main-card-card * { color: #fff8e1 !important; }
 
-/* ---------- Track list ---------- */
-
-.main-trackList-trackListHeaderRow {
-  border-bottom: 1px solid var(--il-line) !important;
-  color: var(--il-bright) !important;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-size: 11px !important;
-}
-.main-trackList-trackListRow {
-  border-radius: 8px !important;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
-  transition: background 0.12s, box-shadow 0.12s;
-}
-.main-trackList-trackListRow:hover {
-  background: var(--il-wash) !important;
-  box-shadow: inset 4px 0 0 var(--il-accent);
-}
-.main-trackList-trackListRow[aria-selected="true"],
-.main-trackList-trackListRow.Q_VN_DjnfmJnnbShT4rU {
-  background: rgba(232, 185, 35, 0.3) !important;
-  box-shadow: inset 4px 0 0 var(--il-bright);
-}
-.main-trackList-rowMainContentTitle { font-weight: 600; }
-.main-trackList-rowSectionIndex,
-.main-trackList-rowDuration {
-  color: var(--il-bright) !important;
-  font-variant-numeric: tabular-nums;
-}
-.main-trackList-rowHeart[aria-checked="true"],
-.main-trackList-rowHeart svg { color: var(--il-accent) !important; }
-.main-trackList-trackListRow:hover .main-trackList-rowHeart { opacity: 1 !important; }
-
-/* ---------- Player bar ---------- */
-
-.main-nowPlayingWidget-coverArtContainer,
-.main-nowPlayingView-coverArtContainer {
-  box-shadow: 0 0 0 2px var(--il-accent), 0 6px 18px rgba(0, 0, 0, 0.75) !important;
-  border-radius: 6px !important;
-}
-.main-nowPlayingWidget-nowPlayingTitle,
-.main-nowPlayingWidget-nowPlayingTitle a { color: #fff8e1 !important; }
-.main-nowPlayingWidget-nowPlayingArtist,
-.main-nowPlayingWidget-nowPlayingArtist a { color: #e6cf96 !important; }
-
-/* Every transport control shares the accent, with a real gold play button. */
-.Root__now-playing-bar [data-testid^="control-button-"] {
-  color: var(--il-bright) !important;
-  transition: color 0.15s, transform 0.15s, filter 0.15s;
-}
-.Root__now-playing-bar [data-testid^="control-button-"]:hover {
-  color: var(--il-accent) !important;
-  transform: scale(1.1);
-}
-.Root__now-playing-bar [data-testid="control-button-playpause"] {
-  width: 34px;
-  height: 34px;
-  border-radius: 50% !important;
-  background: var(--il-accent) !important;
-  color: var(--il-ink) !important;
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.55), 0 6px 18px var(--il-wash);
-}
-.Root__now-playing-bar [data-testid="control-button-playpause"]:hover {
-  background: var(--il-bright) !important;
-  color: var(--il-ink) !important;
-}
-.Root__now-playing-bar [data-testid="control-button-playpause"] svg { fill: currentColor !important; }
-.Root__now-playing-bar [data-testid="control-button-playpause"] svg path { stroke: currentColor !important; }
-
-.Root__now-playing-bar [data-testid="control-button-shuffle"][aria-pressed="true"],
-.Root__now-playing-bar [data-testid="control-button-repeat"][aria-pressed="true"],
-.Root__now-playing-bar [data-testid="control-button-heart"][aria-pressed="true"],
-[data-testid="add-to-likes"][aria-checked="true"] {
-  color: var(--il-accent) !important;
-  filter: drop-shadow(0 0 7px var(--il-accent));
-}
-.Root__now-playing-bar [data-testid="control-button-heart"] svg path,
-[data-testid="add-to-likes"] svg path { fill: currentColor !important; }
-
-button[data-testid="play-button"] > span:first-child {
+/* ---------- Buttons ---------- */
+button[data-testid="play-button"] > span:first-child,
+button[data-testid="control-button-playpause"] {
   border-radius: 50%;
-  background: var(--il-accent) !important;
+  background: var(--il-metal) !important;
   color: var(--il-ink) !important;
-  box-shadow: 0 6px 20px var(--il-wash);
 }
-button[data-testid="play-button"]:hover > span:first-child {
-  background: var(--il-bright) !important;
-  transform: scale(1.05);
+button[data-testid="control-button-playpause"] span {
+  background: transparent !important;
+  color: var(--il-ink) !important;
 }
 
-/* Progress, volume and the little scrubber thumb. */
+/* ---------- Progress and volume ---------- */
 .Root__now-playing-bar .progress-bar {
-  --fg-color: var(--il-bright) !important;
-  --is-active-fg-color: var(--il-accent) !important;
+  --fg-color: #ffd54a !important;
+  --is-active-fg-color: #ffe9a3 !important;
   --bg-color: rgba(255, 233, 163, 0.28) !important;
 }
-.Root__now-playing-bar .x-progressBar-fillColor { background-image: none !important; }
-.Root__now-playing-bar .progress-bar__slider {
-  background-color: var(--il-bright) !important;
-  box-shadow: 0 0 10px var(--il-accent);
+.Root__now-playing-bar .x-progressBar-fillColor {
+  background-image: none !important;
 }
-.Root__now-playing-bar .progress-bar:hover .progress-bar__slider { transform: scale(1.3); }
-.main-nowPlayingBar-center .progress-bar { height: 12px !important; }
-.main-nowPlayingBar-extraControls button { color: var(--il-bright) !important; }
-
-/* ---------- Now playing view, queue and lyrics ---------- */
-
-.main-nowPlayingView-content,
-.main-nowPlayingView-sectionHeader {
-  color: #fff8e1 !important;
+.main-nowPlayingWidget-coverArtContainer {
+  box-shadow: 0 0 0 2px var(--il-gold);
 }
-.main-nowPlayingView-sectionHeader { color: var(--il-bright) !important; text-transform: uppercase; letter-spacing: 0.1em; }
-.main-nowPlayingView-contextItemInfo .main-type-base,
-.main-nowPlayingView-credits * { color: #e6cf96 !important; }
-.main-nowPlayingView-coverArt { filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.7)); }
-
-.lyrics-lyricsContainer-LyricsLine,
-.lyrics-lyricsContainer-LyricsLineActive {
-  color: rgba(230, 207, 150, 0.55) !important;
+.main-nowPlayingView-coverArtContainer {
+  box-shadow: 0 0 0 2px var(--il-gold);
 }
-.lyrics-lyricsContainer-LyricsLineActive {
-  color: var(--il-bright) !important;
-  text-shadow: 0 0 18px var(--il-wash);
-  transform: scale(1.02);
+.Root__now-playing-bar .progress-bar__slider { background-color: #fff0ba; }
+
+/* ---------- Search, menus, focus, scrollbar ---------- */
+.main-globalNav-searchInputContainer .main-topBar-searchBar {
+  box-shadow: inset 0 0 0 1px var(--il-line) !important;
 }
-.lyrics-lyricsContainer-LyricsContainer { background: transparent !important; }
-
-.main-queue-queueItem {
-  border-radius: 8px !important;
-  transition: background 0.12s;
+.main-globalNav-searchInputContainer .main-topBar-searchBar:focus {
+  box-shadow: inset 0 0 0 2px var(--il-gold) !important;
 }
-.main-queue-queueItem:hover { background: var(--il-wash) !important; }
-.main-queue-queueItemNowPlaying { box-shadow: inset 3px 0 0 var(--il-accent); }
-
-/* ---------- Menus, dialogs, toasts, tooltips ---------- */
-
 .main-contextMenu-menu {
-  background: var(--il-deep) !important;
-  border: 1px solid var(--il-accent);
-  border-radius: 10px !important;
-  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.75), 0 0 22px var(--il-wash);
-}
-.main-contextMenu-menuItemButton {
-  border-radius: 6px !important;
-  color: #fff8e1 !important;
-}
-.main-contextMenu-menuItemButton:hover {
-  background: var(--il-wash) !important;
-  color: var(--il-bright) !important;
-}
-.main-contextMenu-menuDivider { background: var(--il-line) !important; }
-
-[role="dialog"]:not(.il-hub-panel):not(.il-card),
-[role="alertdialog"]:not(.il-hub-panel):not(.il-card) {
-  background: #1b1408 !important;
-  border: 1px solid var(--il-accent) !important;
-  border-radius: 16px !important;
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.8), 0 0 30px var(--il-wash);
-}
-[role="dialog"]:not(.il-hub-panel) input,
-[role="dialog"]:not(.il-hub-panel) select {
-  border-color: var(--il-line) !important;
-  color: #fff8e1 !important;
-}
-[role="dialog"]:not(.il-hub-panel):not(.il-card) button:hover { background: var(--il-wash) !important; }
-
-[role="tooltip"],
-[class*="tooltip"] {
-  background: #171003 !important;
-  color: var(--il-bright) !important;
+  background-color: #2e210a !important;
   border: 1px solid var(--il-line);
-  border-radius: 6px !important;
 }
-
-.main-notification-notify,
-.encore-notification-notification {
-  background: var(--il-deep) !important;
-  color: var(--il-bright) !important;
-  border: 1px solid var(--il-accent);
-  border-radius: 10px !important;
-}
-
-.os-scrollbar-handle,
-::-webkit-scrollbar-thumb {
-  background: var(--il-accent) !important;
-  border-radius: 6px !important;
-}
-::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.25) !important; }
-
-/* ---------- Custom control dock ---------- */
-
-.il-dock {
-  position: fixed;
-  right: 16px;
-  bottom: 98px;
-  z-index: 9000;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 7px;
-  border-radius: 18px;
-  border: 1px solid var(--il-line);
-  background: rgba(13, 9, 2, 0.88);
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
-  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.7), inset 0 0 18px var(--il-wash);
-  transform-origin: center;
-}
-.il-dock::before {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  border: 1px solid transparent;
-  border-top-color: var(--il-accent);
-  border-right-color: var(--il-accent);
-  pointer-events: none;
-}
-.il-dock-button {
-  position: relative;
-  display: grid;
-  place-items: center;
-  width: 38px;
-  height: 38px;
-  padding: 0;
-  border: 1px solid transparent;
-  border-radius: 12px;
-  background: transparent;
-  color: var(--il-accent);
-  cursor: pointer;
-  transition: background 0.15s, color 0.15s, transform 0.15s, box-shadow 0.15s;
-}
-.il-dock-button svg {
-  width: 21px;
-  height: 21px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-.il-dock-button:hover {
-  background: var(--il-wash);
-  color: var(--il-bright);
-  border-color: var(--il-line);
-  transform: translateX(-2px) scale(1.06);
-}
-.il-dock-button[aria-pressed="true"] {
-  background: var(--il-accent);
-  color: var(--il-ink);
-  box-shadow: 0 0 16px var(--il-wash);
-}
-.il-dock-button[data-scheme="blue"] { color: #6aa6ff; }
-.il-dock-button[data-scheme="ivory"] { color: #f2ead6; }
-
-.il-dock-tip {
-  position: absolute;
-  right: calc(100% + 12px);
-  top: 50%;
-  transform: translate(6px, -50%);
-  white-space: nowrap;
-  padding: 6px 10px;
-  border-radius: 7px;
-  border: 1px solid var(--il-line);
-  background: #171003;
-  color: var(--il-bright);
-  font-size: 12px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.14s, transform 0.14s;
-}
-.il-dock-button:hover .il-dock-tip,
-.il-dock-button:focus-visible .il-dock-tip {
-  opacity: 1;
-  transform: translate(0, -50%);
-}
-
-.il-toast {
-  position: fixed;
-  left: 50%;
-  bottom: 106px;
-  z-index: 99997;
-  transform: translate(-50%, 12px);
-  padding: 10px 18px;
-  border-radius: 999px;
-  border: 1px solid var(--il-accent);
-  background: rgba(23, 16, 3, 0.95);
-  color: var(--il-bright);
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 22px var(--il-wash);
-  opacity: 0;
-  transition: opacity 0.22s, transform 0.22s;
-  pointer-events: none;
-}
-.il-toast.is-in { opacity: 1; transform: translate(-50%, 0); }
-
-/* ---------- Help panel ---------- */
-
-.il-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 99998;
-  display: grid;
-  place-items: center;
-  padding: 20px;
-  background: rgba(7, 5, 2, 0.82);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-}
-.il-overlay[hidden] { display: none; }
-.il-card {
-  width: min(460px, 94vw);
-  padding: 24px 26px;
-  border-radius: 20px;
-  border: 1px solid var(--il-accent);
-  background: linear-gradient(160deg, var(--il-deep), #0d0902 70%);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 40px var(--il-wash);
-  color: #fff8e1;
-}
-.il-card-head { display: flex; align-items: center; gap: 14px; }
-.il-card-head h2 { margin: 0; font-size: 21px; color: var(--il-bright); }
-.il-card-head p { margin: 4px 0 0; font-size: 12px; color: #e6cf96; }
-.il-card-star {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  flex: 0 0 44px;
-  border-radius: 12px;
-  background: var(--il-accent);
-  color: var(--il-ink);
-}
-.il-card-star svg { width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 12; }
-.il-card-close {
-  margin-left: auto;
-  width: 30px;
-  height: 30px;
-  display: grid;
-  place-items: center;
-  border: 1px solid var(--il-line);
-  border-radius: 8px;
-  background: transparent;
-  color: var(--il-bright);
-  cursor: pointer;
-}
-.il-card-close svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; }
-.il-card-grid {
-  display: grid;
-  gap: 8px;
-  margin: 22px 0 18px;
-}
-.il-card-grid > div {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 8px 12px;
-  border-radius: 9px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--il-line);
-  font-size: 13px;
-}
-.il-card-grid span { margin-left: auto; color: #e6cf96; }
-.il-card kbd {
-  min-width: 22px;
-  padding: 2px 6px;
-  border-radius: 5px;
-  border: 1px solid var(--il-accent);
-  background: var(--il-deep);
-  color: var(--il-bright);
-  font: 600 11px var(--il-font);
-  text-align: center;
-}
-.il-card-note { font-size: 12px; color: #b99c51; margin: 0 0 20px; }
-.il-card-foot { display: flex; justify-content: flex-end; gap: 10px; }
-.il-card-foot button {
-  padding: 9px 16px;
-  border-radius: 999px;
-  border: 1px solid var(--il-line);
-  background: transparent;
-  color: var(--il-bright);
-  cursor: pointer;
-  font: 600 13px var(--il-font);
-}
-.il-card-foot button:hover { background: var(--il-wash); }
-.il-card-foot .il-primary {
-  background: var(--il-accent);
-  color: var(--il-ink);
-  border-color: var(--il-accent);
-}
-.il-help-open { overflow: hidden; }
-
-/* ---------- Responsive and motion ---------- */
-
-@media (max-width: 900px) {
-  :root { --il-star-size: 95vmin; }
-  .il-dock { right: 10px; bottom: 86px; }
-  .il-dock-button { width: 34px; height: 34px; }
-}
-@media (max-height: 620px) {
-  .il-dock { gap: 0; padding: 4px; }
-  .il-dock-button { width: 32px; height: 32px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-  }
-}
-
-/* ================= Custom interface layer ================= */
-
-/* Brand chip centred in the top bar, and a pinned sidebar entry. */
-.il-brand {
-  position: fixed;
-  top: 6px;
-  left: 50%;
-  z-index: 9500;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  height: 30px;
-  padding: 0 12px 0 8px;
-  border-radius: 999px;
-  border: 1px solid var(--il-line);
-  background: rgba(23, 16, 3, 0.74);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  color: var(--il-bright);
-  cursor: pointer;
-  font: 700 11px var(--il-font);
-  letter-spacing: 0.18em;
-  opacity: 0.78;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6), inset 0 0 12px var(--il-wash);
-  transition: opacity 0.15s, transform 0.15s, box-shadow 0.15s;
-}
-.il-brand:hover { opacity: 1; transform: translateX(-50%) translateY(1px); box-shadow: 0 0 22px var(--il-wash); }
-.il-brand svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 12; }
-.il-brand::after {
-  content: "";
-  width: 32px;
-  height: 3px;
-  border-radius: 2px;
-  background: linear-gradient(90deg, var(--il-accent), var(--il-bright));
-}
-
-.il-nav {
-  position: absolute;
-  left: 12px;
-  right: 12px;
-  bottom: 12px;
-  z-index: 15;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  height: 40px;
-  padding: 0 12px;
-  border-radius: 11px;
-  border: 1px solid var(--il-accent);
-  background: linear-gradient(90deg, var(--il-deep), rgba(23, 16, 3, 0.9));
-  color: var(--il-bright);
-  cursor: pointer;
-  font: 600 12px var(--il-font);
-  box-shadow: inset 3px 0 0 var(--il-accent), 0 6px 18px rgba(0, 0, 0, 0.55);
-  transition: background 0.15s, transform 0.15s;
-}
-.il-nav:hover { transform: translateX(3px); background: var(--il-wash); }
-.il-nav svg { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 12; }
-.il-nav kbd {
-  margin-left: auto;
-  padding: 2px 5px;
-  border-radius: 5px;
-  border: 1px solid var(--il-line);
-  color: #b99c51;
-  font: 10px var(--il-font);
-}
-button[title="Israel Hub"] { color: var(--il-bright) !important; }
-button[title="Israel Hub"] svg { filter: drop-shadow(0 0 6px var(--il-accent)); }
-
-/* ---------- Israel Hub ---------- */
-
-.il-hub { z-index: 99990; }
-.il-hub-panel {
-  width: min(1020px, 95vw);
-  max-height: 92vh;
-  overflow: auto;
-  border-radius: 22px;
-  border: 1px solid var(--il-accent);
-  background: linear-gradient(160deg, rgba(46, 33, 10, 0.98), rgba(13, 9, 2, 0.99) 65%);
-  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.85), 0 0 50px var(--il-wash);
-  color: #fff8e1;
-}
-.il-hub-head {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 18px 22px;
-  border-bottom: 1px solid var(--il-line);
-}
-.il-hub-head::after {
-  content: "";
-  position: absolute;
-  left: 22px;
-  right: 22px;
-  bottom: -1px;
-  height: 2px;
-  background: linear-gradient(90deg, var(--il-accent), transparent 60%);
-}
-.il-hub-mark {
-  display: grid;
-  place-items: center;
-  width: 46px;
-  height: 46px;
-  flex: 0 0 46px;
-  border-radius: 13px;
-  background: var(--il-accent);
-  color: var(--il-ink);
-}
-.il-hub-mark svg { width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 12; }
-.il-hub-head h2 { margin: 0; font-size: 21px; color: var(--il-bright); letter-spacing: 0.02em; }
-.il-hub-head p { margin: 3px 0 0; font-size: 12px; color: #b99c51; }
-.il-hub-close {
-  margin-left: auto;
-  width: 32px;
-  height: 32px;
-  display: grid;
-  place-items: center;
-  border-radius: 9px;
-  border: 1px solid var(--il-line);
-  background: transparent;
-  color: var(--il-bright);
-  cursor: pointer;
-}
-.il-hub-close:hover { background: var(--il-wash); }
-.il-hub-close svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; }
-
-.il-hub-body { display: grid; grid-template-columns: 1.1fr 0.9fr; }
-.il-hub-stage {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 11px;
-  padding: 22px 24px 24px;
-  overflow: hidden;
-  border-right: 1px solid var(--il-line);
-  background: radial-gradient(circle at 50% 28%, var(--il-wash), transparent 62%);
-}
-.il-hub-star {
-  position: absolute;
-  top: 6px;
-  left: 50%;
-  width: 270px;
-  height: 270px;
-  margin-left: -135px;
-  background-color: var(--il-accent);
-  -webkit-mask: var(--il-star-mask) center / contain no-repeat;
-  mask: var(--il-star-mask) center / contain no-repeat;
-  opacity: 0.16;
-  pointer-events: none;
-  animation: il-spin 40s linear infinite;
-  will-change: transform, scale;
-}
-#il-viz {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-  height: 42%;
-  pointer-events: none;
-  opacity: 0.9;
-}
-html[data-il-viz="off"] #il-viz { opacity: 0; }
-#il-cover {
-  position: relative;
-  z-index: 1;
-  width: 148px;
-  height: 148px;
-  object-fit: cover;
-  border-radius: 14px;
-  border: 2px solid var(--il-accent);
-  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.75), 0 0 24px var(--il-wash);
-  transition: opacity 0.2s;
-}
-.il-hub-meta { position: relative; z-index: 1; text-align: center; }
-.il-hub-meta h3 { margin: 0; font-size: 19px; color: var(--il-bright); }
-.il-hub-meta p { margin: 3px 0 0; font-size: 12px; color: #e6cf96; }
-
-.il-hub-transport { position: relative; z-index: 1; display: flex; align-items: center; gap: 8px; }
-.il-hub-transport button {
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  padding: 0;
-  border-radius: 50%;
-  border: 1px solid var(--il-line);
-  background: rgba(0, 0, 0, 0.38);
-  color: var(--il-bright);
-  cursor: pointer;
-  transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
-}
-.il-hub-transport button:hover { background: var(--il-wash); border-color: var(--il-accent); transform: scale(1.1); }
-.il-hub-transport button[aria-pressed="true"] { background: var(--il-accent); color: var(--il-ink); box-shadow: 0 0 14px var(--il-wash); }
-.il-hub-transport .il-hub-play {
-  width: 50px;
-  height: 50px;
-  background: var(--il-accent);
-  color: var(--il-ink);
-  border-color: var(--il-accent);
-  box-shadow: 0 0 24px var(--il-wash);
-}
-.il-hub-transport .il-hub-play:hover { background: var(--il-bright); color: var(--il-ink); }
-.il-hub-transport svg {
-  width: 17px;
-  height: 17px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-.il-hub-transport [data-hub="prev"] svg,
-.il-hub-transport [data-hub="next"] svg,
-.il-hub-transport .il-hub-play svg { fill: currentColor; stroke: none; }
-
-.il-hub-times {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 380px;
-  font-size: 11px;
-  color: #e6cf96;
-  font-variant-numeric: tabular-nums;
-}
-.il-range {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  max-width: 380px;
-  accent-color: var(--il-accent);
-  cursor: pointer;
-}
-.il-hub-volume { position: relative; z-index: 1; display: flex; align-items: center; gap: 8px; width: 100%; max-width: 380px; }
-.il-hub-volume svg { width: 18px; height: 18px; flex: 0 0 auto; fill: none; stroke: var(--il-bright); stroke-width: 2; }
-.il-hub-volume .il-range { max-width: none; }
-.il-hub-volume span { min-width: 34px; font-size: 11px; color: var(--il-bright); text-align: right; }
-
-/* ---------- Hub settings column ---------- */
-
-.il-hub-side { padding: 20px 22px; background: rgba(0, 0, 0, 0.16); }
-.il-hub-side h4 {
-  margin: 18px 0 10px;
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--il-accent);
-}
-.il-hub-side h4:first-child { margin-top: 0; }
-.il-swatches { display: flex; gap: 8px; }
-.il-swatch {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  padding: 10px 4px;
-  border-radius: 12px;
-  border: 1px solid var(--il-line);
-  background: rgba(255, 255, 255, 0.03);
-  color: #e6cf96;
-  cursor: pointer;
-  font-size: 11px;
-}
-.il-swatch span {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--swatch);
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.5);
-}
-.il-swatch em { font-style: normal; }
-.il-swatch.is-active { border-color: var(--swatch); color: #fff; box-shadow: 0 0 18px var(--il-wash); }
-.il-swatch:hover { background: var(--il-wash); }
-
-.il-hub-toggles { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
-.il-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 8px 10px;
-  border-radius: 9px;
-  border: 1px solid var(--il-line);
-  background: rgba(255, 255, 255, 0.03);
-  color: #e6cf96;
-  cursor: pointer;
-  font-size: 12px;
-}
-.il-toggle i {
-  position: relative;
-  width: 30px;
-  height: 16px;
-  flex: 0 0 auto;
-  border-radius: 999px;
-  background: var(--il-deep);
-  transition: background 0.15s;
-}
-.il-toggle i::after {
-  content: "";
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: #e6cf96;
-  transition: transform 0.15s;
-}
-.il-toggle[aria-pressed="true"] { color: var(--il-bright); border-color: var(--il-accent); }
-.il-toggle[aria-pressed="true"] i { background: var(--il-accent); }
-.il-toggle[aria-pressed="true"] i::after { transform: translateX(14px); background: var(--il-ink); }
-
-.il-sliders { display: grid; gap: 10px; }
-.il-slider { display: grid; gap: 4px; font-size: 11px; color: #e6cf96; }
-.il-slider > span { display: flex; justify-content: space-between; }
-.il-slider em { font-style: normal; color: var(--il-bright); }
-.il-slider input { width: 100%; accent-color: var(--il-accent); }
-
-.il-hub-links { display: flex; flex-wrap: wrap; gap: 7px; }
-.il-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 7px 12px;
-  border-radius: 999px;
-  border: 1px solid var(--il-line);
-  background: rgba(255, 255, 255, 0.03);
-  color: var(--il-bright);
-  cursor: pointer;
-  font-size: 11px;
-}
-.il-link:hover { background: var(--il-wash); border-color: var(--il-accent); }
-.il-link svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; }
-.il-hub-note { margin: 14px 0 0; font-size: 10px; color: #b99c51; }
-.il-hub-foot {
-  padding: 12px 22px;
-  border-top: 1px solid var(--il-line);
-  font-size: 10px;
-  color: #b99c51;
-  letter-spacing: 0.04em;
-}
-
-/* ---------- Structural details in the client ---------- */
-
-/* A ribbon under playlist/album headers ties the header to the flag. */
-.main-entityHeader-backgroundColor::after {
-  content: "✦";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 14px;
-  line-height: 14px;
-  text-align: center;
-  font-size: 11px;
-  color: var(--il-bright);
-  background: linear-gradient(90deg, transparent, var(--il-wash) 40%, var(--il-wash) 60%, transparent);
-  pointer-events: none;
-}
-/* The playing row gets a pulsing star instead of a plain index number. */
-.main-trackList-trackListRow[aria-selected="true"] .main-trackList-rowSectionIndex { font-size: 0 !important; }
-.main-trackList-trackListRow[aria-selected="true"] .main-trackList-rowSectionIndex::before {
-  content: "✦";
-  font-size: 15px;
-  color: var(--il-bright);
-  text-shadow: 0 0 10px var(--il-accent);
-  animation: il-pulse 1s ease-in-out infinite alternate;
-}
-@keyframes il-pulse { to { transform: scale(1.28); opacity: 0.65; } }
-
-@media (max-width: 880px) {
-  .il-hub-body { grid-template-columns: 1fr; }
-  .il-hub-stage { border-right: none; border-bottom: 1px solid var(--il-line); }
-  .il-brand { display: none; }
-  .il-nav kbd { display: none; }
-}
+.main-contextMenu-menuItemButton:hover { background-color: rgba(232, 185, 35, 0.22) !important; }
+:focus-visible { outline-color: #ffd54a !important; }
+::selection { background: #e8b923; color: #171003; }
+.os-scrollbar-handle { background: var(--il-gold) !important; border-radius: 6px !important; }
+::-webkit-scrollbar-thumb { background: var(--il-gold) !important; border-radius: 6px; }

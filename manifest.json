@@ -1,9 +1,10 @@
 {
   "name": "Israel",
-  "description": "Full Israeli flag-inspired Spotify skin: gold accents, Star of David artwork, custom controls, three palettes and bass-reactive visuals.",
+  "description": "A dark gold Spicetify theme with Israeli flag accents, a Star of David and bass-reactive visual details.",
   "preview": "preview.svg",
   "usercss": "user.css",
   "schemes": "color.ini",
   "readme": "README.md",
-  "tags": ["dark", "gold", "blue", "israel", "animated", "custom-controls"]
+  "tags": ["dark", "gold", "israel", "animated"],
+  "include": ["https://cdn.jsdelivr.net/gh/pitxyqq/spicetify-israel-theme@main/theme.js"]
 }
